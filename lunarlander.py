@@ -99,7 +99,7 @@ def gameIntro():
 				pygame.quit()
 				quit()
 				
-			#------- IF USER PRESS Q OR P, GAME QUIT -------- 
+			#------- IF USER PRESS Q OR P, GAME QUIT OR PLAY -------- 
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_q:
 					pygame.quit()
