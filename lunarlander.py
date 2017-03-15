@@ -1,6 +1,8 @@
 import pygame
 import time
 import random
+import threading
+
 
 
 #---------- CHOOSE SOME COLORS ----------
@@ -24,13 +26,14 @@ class Rocket(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(imgload, (100,100))
         self.rect = self.image.get_rect()
 
+    #---------- COLLISION DETECTION SET TO FALSE SO ROCKET DON'T DISAPPEAR------------
     def collide(self, spriteGroup):
         global strength
         if pygame.sprite.spritecollide(self, spriteGroup, False):
             self.rect.x += 20
             strength -= 1
-
-
+            message_to_screen("DAMAGE", red, 150, 300, 50)
+            pygame.display.update()
 
 
 
@@ -46,6 +49,7 @@ class Bullet(pygame.sprite.Sprite):
     def update(self):
         self.rect.y -= 10
 
+    #---------- COLLISION DETECTION SET TO TRUE SO OBJECTS DISAPPEAR WHEN HIT------------
     def collide(self, spriteGroup):
         pygame.sprite.spritecollide(self, spriteGroup, True)
 
@@ -61,7 +65,7 @@ class Asteroid(pygame.sprite.Sprite):
 
     #------- ASTEROID MOVES DOWNWARD TO HIT THE ROCKET -------------
     def update(self):
-        self.rect.y += 10
+        self.rect.y += 20
 
 
 #----------INITIALIZE THE GAME----------
@@ -134,6 +138,17 @@ def gameIntro():
 
 
 #---------- FUNCTION 4: CREATE THE GAME LOOP ----------
+def asteroidTimer():
+    asteroid = Asteroid()
+    asteroid.rect.x = random.randrange(0,400)
+    asteroid.rect.y = random.randrange(0,100)
+    asteroid_list.add(asteroid)
+    all_sprites_list.add(asteroid)
+    threading.Timer(0.5, asteroidTimer).start()
+
+asteroidTimer()
+
+
 def gameLoop():
     gameExit = False
     gameOver = False
@@ -143,19 +158,14 @@ def gameLoop():
     #----------- KEEPING COUNT OF BULLET -------
     ammunition = 50
 
-    #---------- RANDOMLY GENERATE ASTEROIDS ----------
-    for i in range(1):
-        asteroid = Asteroid()
-        asteroid.rect.x = random.randrange(0,400)
-        asteroid.rect.y = random.randrange(0,100)
-        asteroid_list.add(asteroid)
-        all_sprites_list.add(asteroid)
-
     #---------- GENERATE A ROCKET ----------
     rocket = Rocket()
     all_sprites_list.add(rocket)
     player_list.add(rocket)
     rocket.rect.y = 500
+
+    #---------- GENERATE A ASTEROID BASED ON A SET TIMER ----------
+
 
 #---------- WHILE USER PLAYS THE GAME ----------
     while not gameExit:
@@ -192,13 +202,13 @@ def gameLoop():
 
         #---------- RANDOMLY GENERATE ASTEROIDS DURING GAMEPLAY
 
-        if asteroid.rect.y > 500:
+        '''if asteroid.rect.y > 500:
             for i in range(asteroidappear):
                 asteroid = Asteroid()
                 asteroid.rect.x = random.randrange(0,400)
                 asteroid.rect.y = random.randrange(0,100)
                 asteroid_list.add(asteroid)
-                all_sprites_list.add(asteroid)
+                all_sprites_list.add(asteroid)'''
 
         #---------- DETECTING COLLISION BETWEEN BULLET AND ASTEROIDS
         for bullet in bullet_list:
