@@ -15,7 +15,6 @@ red = (255,0,0)
 #----------SET BACKGROUND OF THE GAME----------
 introimg = pygame.image.load("C:\\Users\\lengu\\Desktop\\Pygame\\space2.jpg")
 introimg2 = pygame.transform.scale(introimg, (1100,600))
-
 strength = 100
 
 #----------DRAW THE ROCKET TO THE SCREEN ----------
@@ -137,7 +136,7 @@ def gameIntro():
 
 
 
-#---------- FUNCTION 4: CREATE THE GAME LOOP ----------
+#---------- FUNCTION 4: CREATE A TIMER FOR ASTEROIDS ----------
 def asteroidTimer():
     asteroid = Asteroid()
     asteroid.rect.x = random.randrange(0,400)
@@ -149,6 +148,7 @@ def asteroidTimer():
 asteroidTimer()
 
 
+#---------- FUNCTION 5: CREATE THE GAME LOOP ----------
 def gameLoop():
     gameExit = False
     gameOver = False
@@ -200,15 +200,6 @@ def gameLoop():
         if rocket.rect.x < -10:
             rocket.rect.x = -10
 
-        #---------- RANDOMLY GENERATE ASTEROIDS DURING GAMEPLAY
-
-        '''if asteroid.rect.y > 500:
-            for i in range(asteroidappear):
-                asteroid = Asteroid()
-                asteroid.rect.x = random.randrange(0,400)
-                asteroid.rect.y = random.randrange(0,100)
-                asteroid_list.add(asteroid)
-                all_sprites_list.add(asteroid)'''
 
         #---------- DETECTING COLLISION BETWEEN BULLET AND ASTEROIDS
         for bullet in bullet_list:
