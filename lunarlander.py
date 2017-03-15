@@ -14,6 +14,7 @@ red = (255,0,0)
 introimg = pygame.image.load("C:\\Users\\lengu\\Desktop\\Pygame\\space2.jpg")
 introimg2 = pygame.transform.scale(introimg, (1100,600))
 
+strength = 100
 
 #----------DRAW THE ROCKET TO THE SCREEN ----------
 class Rocket(pygame.sprite.Sprite):
@@ -24,8 +25,12 @@ class Rocket(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
     def collide(self, spriteGroup):
+        global strength
         if pygame.sprite.spritecollide(self, spriteGroup, False):
             self.rect.x += 20
+            strength -= 1
+
+
 
 
 
@@ -54,6 +59,7 @@ class Asteroid(pygame.sprite.Sprite):
         self.image =  pygame.transform.rotate(imgtran, 40)
         self.rect = self.image.get_rect()
 
+    #------- ASTEROID MOVES DOWNWARD TO HIT THE ROCKET -------------
     def update(self):
         self.rect.y += 10
 
@@ -134,8 +140,7 @@ def gameLoop():
     asteroidappear = random.randrange(1,5)
     rocket_change = 5
 
-    #----------- KEEPING COUNTS OF STRENGTH AND BULLET --------
-    strength = 100
+    #----------- KEEPING COUNT OF BULLET -------
     ammunition = 50
 
     #---------- RANDOMLY GENERATE ASTEROIDS ----------
@@ -151,7 +156,6 @@ def gameLoop():
     all_sprites_list.add(rocket)
     player_list.add(rocket)
     rocket.rect.y = 500
-
 
 #---------- WHILE USER PLAYS THE GAME ----------
     while not gameExit:
@@ -195,17 +199,6 @@ def gameLoop():
                 asteroid.rect.y = random.randrange(0,100)
                 asteroid_list.add(asteroid)
                 all_sprites_list.add(asteroid)
-
-        '''
-        #---------- DETECTING COLLISION BETWEEN BULLET AND ASTEROIDS -------
-        for bullet in bullet_list:
-            asteroid_hit_list = pygame.sprite.spritecollide(bullet, asteroid_list, True)
-
-            #FOR EACH BLOCK HIT, REMOVE BULLET
-            for asteroid in asteroid_hit_list:
-                bullet_list.remove(bullet)
-                all_sprites_list.remove(bullet)
-        '''
 
         #---------- DETECTING COLLISION BETWEEN BULLET AND ASTEROIDS
         for bullet in bullet_list:
