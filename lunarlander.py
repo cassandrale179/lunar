@@ -3,7 +3,7 @@ import time
 import random
 
 
-#---------- CHOOSE TO SOME COLORS ----------
+#---------- CHOOSE SOME COLORS ----------
 white = (255,255,255)
 green = (0,155,0)
 black = (0,0,0)
