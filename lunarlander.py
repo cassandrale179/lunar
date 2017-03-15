@@ -45,7 +45,8 @@ class Asteroid(pygame.sprite.Sprite):
         imgtran = pygame.transform.scale(imgload, (30,30))
         self.image =  pygame.transform.rotate(imgtran, 40)
         self.rect = self.image.get_rect()
-
+	
+    #------- ASTEROID MOVES DOWNWARD TO HIT THE ROCKET ------------- 
     def update(self):
         self.rect.y += 10
 
@@ -69,7 +70,6 @@ clock = pygame.time.Clock()
 all_sprites_list = pygame.sprite.Group()
 bullet_list = pygame.sprite.Group()
 asteroid_list = pygame.sprite.Group()
-player_list = pygame.sprite.Group()
 
 #----------FUNCTION 1: CUSTOMIZE MESSAGE TO BE DISPLAYED----------
 def message_to_screen(message, color, widthdis, heightdis, fontsize):
@@ -93,9 +93,13 @@ def gameIntro():
 	#---------- WHILE IN INTRO, PRESS "Q" TO QUIT OR "P" TO PLAY
 	while (intro):
 		for event in pygame.event.get():
+			
+			#------ IF USER CLOSES WINDOW, GAME QUIT ------ 
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				quit()
+				
+			#------- IF USER PRESS Q OR P, GAME QUIT -------- 
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_q:
 					pygame.quit()
@@ -103,9 +107,11 @@ def gameIntro():
 				if event.key == pygame.K_p:
 					intro = False
 
-		#---------- DISPLAY MESSAGE TO THE SCREEN ----------
+		#---------- DISPLAY GAME BACKGROUND AND ROCKET ----------
 		gameDisplay.blit(introimg2, (-50,0))
 		gameDisplay.blit(rocket2, (150, 500))
+		
+		#---------- DISPLAY MESSAGE TO THE SCREEN ----------
 		message_to_screen("LUNAR LANDER", white, 90, 20, 40)
 		message_to_screen("Developed by M. Le", white, 120, 60, 20)
 		message_to_screen("Instructions:", white, 20, 240, 20)
@@ -123,8 +129,8 @@ def gameIntro():
 def gameLoop():
     gameExit = False
     gameOver = False
-    asteroidappear = random.randrange(1,5)
-    rocket_change = 5
+    rocket_change = 5 #SPECIFY HOW MANY PIXELS THE ROCKET WILL MOVE IF USER PRESS RIGHT OR LEFT 
+    asteroidappear = random.randrange(1,5) #RANDOMLY BLIT 1,2,3,4, OR 5 ASTEROIDS TO THE SCREEN 
 
     #----------- KEEPING COUNTS OF STRENGTH AND BULLET --------
     strength = 100
@@ -162,6 +168,8 @@ def gameLoop():
                     rocket_change = -5
                 if event.key == pygame.K_RIGHT:
                     rocket_change = 5
+		
+		#------ IF USER PRESS SPACE, BULLET IS CREATED, AND AMMUNITION WILL GO DOWN ------------ 
                 if event.key == pygame.K_SPACE:
                     bullet = Bullet()
                     bullet.rect.x = rocket.rect.x + 48
@@ -170,15 +178,14 @@ def gameLoop():
                     bullet_list.add(bullet)
                     ammunition -= 1
 
-        #---------- ROCKET MOVEMENT ------------
+        #---------- PREVENT ROCKET FROM MOVING OFF THE SCREEN ------------
         rocket.rect.x += rocket_change
         if rocket.rect.x > 330:
             rocket.rect.x = 330
         if rocket.rect.x < -10:
             rocket.rect.x = -10
 
-        #---------- RANDOMLY GENERATE ASTEROIDS DURING GAMEPLAY
-
+        #---------- RANDOMLY GENERATE ASTEROIDS DURING GAMEPLAY------- 
         if asteroid.rect.y > 500:
             for i in range(asteroidappear):
                 asteroid = Asteroid()
