@@ -143,7 +143,7 @@ def asteroidTimer():
     asteroid.rect.y = random.randrange(0,100)
     asteroid_list.add(asteroid)
     all_sprites_list.add(asteroid)
-    threading.Timer(0.5, asteroidTimer).start()
+    threading.Timer(0.2, asteroidTimer).start()
 
 asteroidTimer()
 
@@ -186,12 +186,13 @@ def gameLoop():
                 if event.key == pygame.K_RIGHT:
                     rocket_change = 5
                 if event.key == pygame.K_SPACE:
-                    bullet = Bullet()
-                    bullet.rect.x = rocket.rect.x + 48
-                    bullet.rect.y = rocket.rect.y
-                    all_sprites_list.add(bullet)
-                    bullet_list.add(bullet)
-                    ammunition -= 1
+                    if ammunition > 0:
+                        bullet = Bullet()
+                        bullet.rect.x = rocket.rect.x + 48
+                        bullet.rect.y = rocket.rect.y
+                        all_sprites_list.add(bullet)
+                        bullet_list.add(bullet)
+                        ammunition -= 1
 
         #---------- ROCKET MOVEMENT ------------
         rocket.rect.x += rocket_change
@@ -212,6 +213,9 @@ def gameLoop():
             player_list.remove(rocket)
             rocket.collide(asteroid_list)
             player_list.add(rocket)
+
+        if ammunition < 0:
+            ammunition = 0
 
         # Call the update() method on all the sprites
         all_sprites_list.update()
