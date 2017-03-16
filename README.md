@@ -10,6 +10,7 @@ Lunar is a simple game written using Pygame module to allow players to control a
 - Player are given 100 strength in the beginning. If strength runs out, player dies 
 - Rocket will suffer damage everytime asteroid hits them 
 - The distance is a measurement of how many miles player had covered 
+- The more distance you cover, the higher your score! 
 
 
 
